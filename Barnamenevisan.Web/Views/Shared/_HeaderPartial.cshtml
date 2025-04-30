@@ -1,0 +1,85 @@
+﻿@using Barnamenevisan.Core.Extensions
+<div class="top-nav">
+    <div class="container">
+        <div class="col-md-6 col-sm-7 col-xs-7 right-nav">
+            <!-- Clientarea and Basket -->
+            <div class="clientarea">
+                <ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a asp-area="Auth" asp-controller="Account" asp-action="Logout"><i class="fa fa-user"></i> <label>@User.GetUserName()</label> </a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="Auth" asp-controller="Account" asp-action="Register"><i class="fa fa-user-plus"></i> <label>عضویت</label> </a></li>
+                        <li><a asp-area="Auth" asp-controller="Account" asp-action="Login"><i class="fa fa-user"></i> <label>ورود به سایت</label> </a></li>
+                    }
+                    <li><a href=""><i class="fa fa-shopping-bag"></i> سبد خرید <span>10</span></a></li>
+                </ul>
+            </div>
+            <!-- End Clientarea and Basket -->
+        </div>
+        <div class="col-md-6 col-sm-5 col-xs-5 left-nav">
+            <!-- Social -->
+            <div class="socials">
+                <ul>
+                    <li><a href="" class="social-icon" data-balloon=" اینستاگرام " data-balloon-pos="down"><i
+                                class="fa fa-instagram"></i></a></li>
+                    <li><a href="" class="social-icon" data-balloon=" لینکداین " data-balloon-pos="down"><i
+                                class="fa fa-linkedin"></i></a></li>
+                    <li><a href="" class="social-icon" data-balloon=" فیس بوک " data-balloon-pos="down"><i
+                                class="fa fa-facebook"></i></a></li>
+                    <li><a href="" class="social-icon" data-balloon=" تلگرام " data-balloon-pos="down"><i
+                                class="fa fa-paper-plane"></i></a></li>
+                    <li><a href="" class="social-icon" data-balloon=" توئیتر " data-balloon-pos="down"><i
+                                class="fa fa-twitter"></i></a></li>
+                </ul>
+            </div>
+            <!-- End Social -->
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- site Header -->
+<header class="header-site">
+    <div class="container">
+        <div class="col-md-7 col-sm-7 logo-layer">
+            <a href="" class="logo"><img src="/img/logo.png"></a>
+            <h1>فروشگاه <span>آنلایــــــن</span></h1>
+            <h2>آموزشگاه برنامه نویســـان</h2>
+        </div>
+        <div class="col-md-5 col-sm-5 left-header-site">
+            <h5> پشتیبانــــی 24 ساعتـــــه </h5>
+            <h3> 09124140939 <i class="icon-phone"></i></h3>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</header>
+<!-- End site Header -->
+<!-- Mega Menu -->
+<nav class="mega-menu">
+    <div class="container">
+        <span class="responsive-list"><i class="fa fa-th-list"></i></span>
+        <ul>
+            <li><a href=""> منوی شماره یک </a></li>
+            <li><a href=""> منوی شماره یک </a></li>
+            <li><a href=""> منوی شماره یک </a></li>
+            <li><a href=""> منوی شماره یک </a></li>
+            <li><a href=""> منوی شماره یک </a></li>
+            <li><a href=""> منوی شماره یک </a></li>
+            <li><a href=""> منوی شماره یک </a></li>
+        </ul>
+
+        <!-- Search -->
+        <div class="form-search">
+            <span><i class="fa fa-search"></i></span>
+            <form action="" method="get">
+                <input type="text" placeholder=" جستجو کنید ..." class="border-radius">
+                <button type="submit" class="border-radius"> بگرد</button>
+            </form>
+        </div>
+        <!-- End Search -->
+
+    </div>
+</nav>
+<!-- End Mega Menu -->

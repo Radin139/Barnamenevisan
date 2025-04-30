@@ -1,0 +1,34 @@
+﻿@model Barnamenevisan.Domain.ViewModels.Auth.LoginViewModel
+
+@{
+    ViewBag.Title = "ورود";
+}
+
+<div class="col-md-9 col-sm-8 left-side-content internal-style">
+
+    <section class="border-radius">
+        <header><h3> ورود به سایت </h3></header>
+        <article>
+            <div class="col-md-10 col-sm-10 col-xs-12">
+
+                <form method="post" asp-action="Login">
+                    <div class="form-group">
+                        <input type="text" asp-for="Username" class="form-control" placeholder="نام کاربری ">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" asp-for="Password" class="form-control" placeholder="رمز عبور">
+                    </div>
+                    <p><a href=""><i class="fa fa-lock"></i>رمز عبور خود را فراموش کرده ام !</a></p>
+                    <p><a asp-action="Register"><i class="fa fa-user-plus"></i>ثبت نام کنید!</a></p>
+                    <input type="submit" value=" ورود به سایت">
+                    <div asp-validation-summary="All" class="text-danger">
+                        
+                    </div>
+                </form>
+
+            </div>
+            <div class="clearfix"></div>
+        </article>
+    </section>
+                
+</div>
