@@ -2,6 +2,7 @@
 
 using Barnamenevisan.Data.Context;
 using Barnamenevisan.IoC;
+using Barnamenevisan.Web.Middlewares;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,8 +48,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+
 app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseMiddleware<AdminMiddleware>();
 
 app.MapControllerRoute(
     name: "areas",
