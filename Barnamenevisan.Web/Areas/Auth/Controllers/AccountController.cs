@@ -45,6 +45,23 @@ public class AccountController(IUserService userService) : Controller
             }
             case RegisterResult.Success:
             {
+                User user = await userService.GetUserByUsernameAsync(viewModel.Username);
+
+                List<Claim> claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim("IsAdmin", user.IsAdmin.ToString()),
+                };
+                
+                ClaimsIdentity claimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                ClaimsPrincipal claimPrincipal = new ClaimsPrincipal(claimIdentity);
+
+                await HttpContext.SignInAsync(claimPrincipal, new AuthenticationProperties()
+                {
+                    IsPersistent = true,
+                });
+                
                 TempData["Color"] = "success";
                 TempData["Message"] = "ثبت نام با موفقیت انجام شد";
                 return View("ShowMessage");
