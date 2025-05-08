@@ -1,4 +1,5 @@
-﻿using Barnamenevisan.Core.Services.Implementations;
+﻿using Barnamenevisan.Core.Senders;
+using Barnamenevisan.Core.Services.Implementations;
 using Barnamenevisan.Core.Services.Interfaces;
 using Barnamenevisan.Data.Repositories;
 using Barnamenevisan.Domain.Interfaces;
@@ -14,6 +15,7 @@ public static class Container
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
+        services.AddSingleton<EmailSender>();
     }
 
     #endregion

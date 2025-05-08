@@ -1,0 +1,21 @@
+﻿@model Barnamenevisan.Domain.ViewModels.Admin.User.UserEditViewModel
+
+@{
+    ViewBag.Title = "ویرایش کاربر";
+}
+
+<form asp-action="Edit" method="post" novalidate="novalidate">
+    <input type="hidden" asp-for="Id"/>
+    <input type="text" asp-for="Username" class="form-control" placeholder="نام کاربری"/>
+    <br/>
+    <input type="email" asp-for="Email" class="form-control" placeholder="ایمیل"/>
+    <br/>
+    <input type="password" asp-for="Password" class="form-control" placeholder="رمز عبور"/>
+    <br/>
+    <label asp-for="IsAdmin"></label>
+    <input type="checkbox" asp-for="IsAdmin" class="form-check"/>
+    <br/>
+    <button class="btn btn-warning" type="submit">ویرایش</button>
+    <br><br>
+    <div class="text-danger" asp-validation-summary="All"></div>
+</form>

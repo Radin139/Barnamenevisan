@@ -1,0 +1,20 @@
+﻿@model Barnamenevisan.Domain.ViewModels.Admin.User.UserCreateViewModel
+
+@{
+    ViewBag.Title = "افزودن کاربر";
+}
+
+<form asp-action="Create" method="post" novalidate="novalidate">
+    <input type="text" asp-for="Username" class="form-control" placeholder="نام کاربری" />
+    <br/>
+    <input type="password" asp-for="Password" class="form-control" placeholder="رمز عبور" />
+    <br/>
+    <input type="email" asp-for="Email" class="form-control" placeholder="ایمیل" />
+    <br/>
+    <label asp-for="IsAdmin"></label>
+    <input type="checkbox" asp-for="IsAdmin" class="form-check" />
+    <br/>
+    <button class="btn btn-success" type="submit">ثبت</button>
+    <br><br>
+    <div class="text-danger" asp-validation-summary="All"></div>
+</form>

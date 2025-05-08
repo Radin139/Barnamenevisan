@@ -21,6 +21,7 @@ public class AccountController(IUserService userService) : Controller
 
     [Route("register")]
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel viewModel)
     {
         if (!ModelState.IsValid)
@@ -83,6 +84,7 @@ public class AccountController(IUserService userService) : Controller
 
     [HttpPost]
     [Route("login")]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel viewModel)
     {
         if (!ModelState.IsValid)
@@ -129,6 +131,46 @@ public class AccountController(IUserService userService) : Controller
     
     #endregion
 
+    #region ForgotPassword
+    
+    [Route("forgot-password")]
+    public IActionResult ForgotPassword()
+    {
+        return View();
+    }
+
+    [Route("forgot-password")]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel viewModel)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(viewModel);
+        }
+
+        ForgotPasswordResult result = await userService.GetConfirmationCodeForUserAsync(viewModel);
+
+        switch (result)
+        {
+            case ForgotPasswordResult.Success:
+                User user = await userService.GetUserByEmailAsync(viewModel.Email);
+                
+                return RedirectToAction(nameof(ResetPassword));
+            case ForgotPasswordResult.UserNotFound:
+                ModelState.AddModelError("Email", "هیچ کاربری با این ایمیل پیدا نشد");
+                return View(viewModel);
+            case ForgotPasswordResult.EmailNotFound:
+                ModelState.AddModelError("Email", "ایمیل یافت نشد");
+                return View(viewModel);
+                break;
+            default:
+                return View(viewModel);
+        }
+    }
+
+    #endregion
+
     #region Logout
     
     [Route("logout")]
@@ -136,6 +178,37 @@ public class AccountController(IUserService userService) : Controller
     {
         await HttpContext.SignOutAsync();
         return Redirect("/");
+    }
+
+    #endregion
+
+    #region ResetPassword
+    
+    [Route("reset-password")]
+    public IActionResult ResetPassword()
+    {
+        return View();
+    }
+
+    [Route("reset-password")]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel viewModel)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(viewModel);
+        }
+
+        ResetPasswordResult result = await userService.ResetPasswordAsync(viewModel);
+
+        if (result == ResetPasswordResult.WrongCode)
+        {
+            ModelState.AddModelError("ConfirmCode", "کد تایید اشتباه میباشد");
+            return View(viewModel);
+        }
+
+        return RedirectToAction(nameof(Login));
     }
 
     #endregion

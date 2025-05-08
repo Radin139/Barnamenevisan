@@ -1,0 +1,14 @@
+﻿@model Barnamenevisan.Domain.ViewModels.Admin.User.UserDeletePermanentlyViewModel
+
+@{
+    ViewBag.Title = "حذف برای همیشه";
+}
+
+<h3>
+    آیا از حذف @Model.Username مطمئن هستید؟
+</h3>
+<form method="post" asp-action="DeletePermanently">
+    <input type="hidden" asp-for="Id"/>
+    <a class="btn btn-warning" asp-action="Index">بازگشت</a>
+    <button type="submit" class="btn btn-danger">حذف</button>
+</form>

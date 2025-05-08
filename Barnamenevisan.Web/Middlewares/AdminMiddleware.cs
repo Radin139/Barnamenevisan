@@ -6,6 +6,7 @@ public class AdminMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(HttpContext context)
     {
+        
         if (context.Request.Path.ToString().ToLower().StartsWith("/admin"))
         {
             if (!context.User.GetIsAdmin())
