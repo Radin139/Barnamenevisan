@@ -1,0 +1,13 @@
+﻿@model Barnamenevisan.Domain.ViewModels.Admin.Category.CategoryCreateViewModel
+
+@{
+    ViewBag.Title = "افزودن دسته بندی";
+}
+
+<form asp-action="Create" method="post" novalidate="novalidate">
+    <input type="text" asp-for="Title" class="form-control" placeholder="عنوان" />
+    <br/>
+    <button class="btn btn-success" type="submit">ثبت</button>
+    <br><br>
+    <div class="text-danger" asp-validation-summary="All"></div>
+</form> 

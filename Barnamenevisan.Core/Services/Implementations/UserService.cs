@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Barnamenevisan.Core.Extensions;
+﻿using Barnamenevisan.Core.Extensions;
 using Barnamenevisan.Core.Generators;
 using Barnamenevisan.Core.Senders;
 using Barnamenevisan.Core.Services.Interfaces;
@@ -172,7 +171,7 @@ public class UserService(IUserRepository userRepository, EmailSender emailSender
 
     public async Task<UserEditViewModel?> GetUserForEditAsync(int id)
     {
-        User? user = await userRepository.GetByIdAsync(id);
+        User? user = await userRepository.GetByIdAsync(u => u.Id == id && !u.IsDeleted);
         if (user == null)
         {
             return null;
@@ -187,9 +186,15 @@ public class UserService(IUserRepository userRepository, EmailSender emailSender
         };
     }
 
-    public async Task EditUserAsync(UserEditViewModel viewModel)
+    public async Task<bool> EditUserAsync(UserEditViewModel viewModel)
     {
-        User user = await userRepository.GetByIdAsync(viewModel.Id);
+        User? user = await userRepository.GetByIdAsync(u => u.Id == viewModel.Id && !u.IsDeleted);
+        
+        if (user == null)
+        {
+            return false;
+        }
+        
         user.Username = viewModel.Username;
         user.IsAdmin = viewModel.IsAdmin;
         user.Email = viewModel.Email;
@@ -200,11 +205,13 @@ public class UserService(IUserRepository userRepository, EmailSender emailSender
         
         userRepository.Update(user);
         await userRepository.SaveAsync();
+        
+        return true;
     }
 
     public async Task<UserDeletePermanentlyViewModel?> GetUserForPermanentlyDeleteAsync(int id)
     {
-        User? user = await userRepository.GetByIdAsync(id);
+        User? user = await userRepository.GetByIdAsync(u => u.Id == id && u.IsDeleted);
         if (user == null)
         {
             return null;
@@ -219,7 +226,7 @@ public class UserService(IUserRepository userRepository, EmailSender emailSender
 
     public async Task<bool> DeleteUserPermanentlyAsync(int id)
     {
-        User? user = await userRepository.GetByIdAsync(id);
+        User? user = await userRepository.GetByIdAsync(u => u.Id == id && u.IsDeleted);
         if (user == null)
         {
             return false;

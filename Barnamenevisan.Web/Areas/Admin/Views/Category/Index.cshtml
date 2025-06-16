@@ -1,0 +1,49 @@
+﻿@using Barnamenevisan.Core.Extensions
+@model List<Barnamenevisan.Domain.ViewModels.Admin.Category.CategoryAdminViewModel>
+
+@{
+    ViewBag.Title = "دسته بندی ها";
+}
+
+<div class="text-center">
+    <a class="btn btn-success" asp-action="Create">افزودن</a>
+    <br/>
+    <br/>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">عنوان</th>
+            <th class="text-center">تاریخ ثبت</th>
+            <th class="text-center">دستورات</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            int i = 1;
+            @foreach (var category in Model)
+            {
+                <tr @(category.IsDeleted ? "class=deleted" : "")>
+                    <td>@i</td>
+                    <td>@category.Title</td>
+                    <td>@category.RegisterDate.ToShamsi()</td>
+                    <td>
+                        @if (category.IsDeleted)
+                        {
+                            <a class="btn btn-primary" asp-action="Restore" asp-route-id="@category.Id">بازگرداندن</a>
+                            <a class="btn btn-danger" asp-action="DeletePermanently" asp-route-id="@category.Id">حذف برای همیشه</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@category.Id">ویرایش</a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@category.Id">حذف</a>
+                        }
+                    </td>
+                </tr>
+
+                i++;
+            }
+        }
+        </tbody>
+    </table>
+</div>

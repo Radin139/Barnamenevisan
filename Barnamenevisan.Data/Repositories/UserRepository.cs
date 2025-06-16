@@ -15,7 +15,7 @@ public class UserRepository(BarnamenevisanDbContext context) : Repository<User>(
 
     public async Task<User?> FindUserByUsernameAndPasswordAsync(string username, string password)
     {
-        return await context.Users.FirstOrDefaultAsync(user => user.Password == password && user.Username == username);
+        return await context.Users.FirstOrDefaultAsync(user => user.Password == password && user.Username == username && user.IsDeleted == false);
     }
 
     public async Task<User?> FindUserByUsernameAsync(string username)

@@ -1,0 +1,17 @@
+﻿@model List<Barnamenevisan.Domain.ViewModels.Blog.CategoryDisplayViewModel>
+
+<!-- Category -->
+<section class="border-radius category-side">
+    <header><h3> دسته بندی ها </h3></header>
+    <article>
+        <ul class="category-menu">
+            @foreach (var viewModel in Model)
+            {
+                <li>
+                    <h2><a href="">@viewModel.Title</a></h2>
+                </li>
+            }
+        </ul>
+    </article>
+</section>
+<!-- End Category -->

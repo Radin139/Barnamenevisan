@@ -154,7 +154,6 @@ public class AccountController(IUserService userService) : Controller
         switch (result)
         {
             case ForgotPasswordResult.Success:
-                User user = await userService.GetUserByEmailAsync(viewModel.Email);
                 
                 return RedirectToAction(nameof(ResetPassword));
             case ForgotPasswordResult.UserNotFound:
@@ -163,7 +162,6 @@ public class AccountController(IUserService userService) : Controller
             case ForgotPasswordResult.EmailNotFound:
                 ModelState.AddModelError("Email", "ایمیل یافت نشد");
                 return View(viewModel);
-                break;
             default:
                 return View(viewModel);
         }

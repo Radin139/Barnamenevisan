@@ -17,7 +17,7 @@ public interface IUserService
     Task<bool> DeleteUserAsync(int id);
     Task<bool> RestoreUserAsync(int id);
     Task<UserEditViewModel?> GetUserForEditAsync(int id);
-    Task EditUserAsync(UserEditViewModel viewModel);
+    Task<bool> EditUserAsync(UserEditViewModel viewModel);
     Task<UserDeletePermanentlyViewModel?> GetUserForPermanentlyDeleteAsync(int id); 
     Task<bool> DeleteUserPermanentlyAsync(int id);
 }

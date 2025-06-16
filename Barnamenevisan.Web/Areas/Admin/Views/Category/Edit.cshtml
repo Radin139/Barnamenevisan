@@ -1,0 +1,14 @@
+﻿@model Barnamenevisan.Domain.ViewModels.Admin.Category.CategoryEditViewModel
+
+@{
+    ViewBag.Title = "ویرایش دسته بندی";
+}
+
+<form asp-action="Edit" method="post" novalidate="novalidate">
+    <input type="hidden" asp-for="Id"/>
+    <input type="text" asp-for="Title" class="form-control" placeholder="عنوان"/>
+    <br/>
+    <button class="btn btn-warning" type="submit">ویرایش</button>
+    <br><br>
+    <div class="text-danger" asp-validation-summary="All"></div>
+</form> 

@@ -1,4 +1,5 @@
-﻿using Barnamenevisan.Domain.Interfaces;
+﻿using System.Linq.Expressions;
+using Barnamenevisan.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Barnamenevisan.Data.Repositories;
@@ -32,6 +33,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     public async Task<TEntity?> GetByIdAsync(int id)
     {
         return await _dbSet.FindAsync(id);
+    }
+
+    public async Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbSet.SingleOrDefaultAsync(predicate);
     }
 
     #endregion

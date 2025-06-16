@@ -22,6 +22,7 @@ public class UserController(IUserService userService) : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(UserCreateViewModel viewModel)
     {
         if (!ModelState.IsValid)
@@ -77,6 +78,7 @@ public class UserController(IUserService userService) : Controller
     }
     
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(UserEditViewModel viewModel)
     {
         if (!ModelState.IsValid)
@@ -84,7 +86,13 @@ public class UserController(IUserService userService) : Controller
             return View(viewModel);
         }
         
-        await userService.EditUserAsync(viewModel);
+        bool result = await userService.EditUserAsync(viewModel);
+
+        if (!result)
+        {
+            return View(viewModel);
+        }
+        
         return RedirectToAction("Index");
     }
 
@@ -101,9 +109,15 @@ public class UserController(IUserService userService) : Controller
     }
     
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeletePermanently(UserDeletePermanentlyViewModel viewModel)
     {
-        await userService.DeleteUserPermanentlyAsync(viewModel.Id);
+        bool result = await userService.DeleteUserPermanentlyAsync(viewModel.Id);
+
+        if (!result)
+        {
+            return View(viewModel);
+        }
         return RedirectToAction("Index");
     }
 }
