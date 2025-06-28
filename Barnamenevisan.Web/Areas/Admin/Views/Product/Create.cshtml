@@ -1,0 +1,25 @@
+﻿@model Barnamenevisan.Domain.ViewModels.Admin.Product.ProductCreateViewModel
+
+@{
+    ViewBag.Title = "افزودن محصول";
+}
+
+<form asp-action="Create" method="post" novalidate="novalidate">
+    <input type="text" asp-for="Title" class="form-control" placeholder="عنوان" />
+    <br/>
+    <input type="text" asp-for="ShortDescription" class="form-control" placeholder="توضیحات کوتاه" />
+    <br/>
+    <textarea asp-for="LongDescription" class="form-control" placeholder="توضیحات کامل"></textarea>
+    <br/>
+    <input type="number" min="0" asp-for="Price" class="form-control" placeholder="قیمت" />
+    <br/>
+    <input type="text" asp-for="Tags" class="form-control" placeholder="برچسب ها" />
+    <br/>
+    <select asp-items="ViewBag.Categories" asp-for="CategoryId" class="form-control">
+        <option disabled="disabled" selected="selected">انتخاب دسته بندی</option>
+    </select>
+    <br/>
+    <button class="btn btn-success" type="submit">ثبت</button>
+    <br><br>
+    <div class="text-danger" asp-validation-summary="All"></div>
+</form> 

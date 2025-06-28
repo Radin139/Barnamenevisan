@@ -21,7 +21,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
     #region GetAll
 
-    public async Task<List<TEntity>> GetAllAsync()
+    public virtual async Task<List<TEntity>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
     }
@@ -30,12 +30,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
     #region GetById
 
-    public async Task<TEntity?> GetByIdAsync(int id)
+    public virtual async Task<TEntity?> GetByIdAsync(int id)
     {
         return await _dbSet.FindAsync(id);
     }
 
-    public async Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicate)
     {
         return await _dbSet.SingleOrDefaultAsync(predicate);
     }
@@ -44,7 +44,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
     #region Insert
 
-    public async Task InsertAsync(TEntity entity)
+    public virtual async Task InsertAsync(TEntity entity)
     {
         await _dbSet.AddAsync(entity);
     }
@@ -53,7 +53,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
     #region Update
 
-    public void Update(TEntity entity)
+    public virtual void Update(TEntity entity)
     {
         _dbSet.Update(entity);
     }
@@ -62,7 +62,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
     #region Delete
 
-    public void Delete(TEntity entity)
+    public virtual void Delete(TEntity entity)
     {
         _dbSet.Remove(entity);
     }
@@ -71,7 +71,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
     #region Save
 
-    public async Task SaveAsync()
+    public virtual async Task SaveAsync()
     {
         await _db.SaveChangesAsync();
     }

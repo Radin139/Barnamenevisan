@@ -21,10 +21,15 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\js\site.js" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Shared\_AdminLayout.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="wwwroot\admin\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
     </ItemGroup>
 
 </Project>

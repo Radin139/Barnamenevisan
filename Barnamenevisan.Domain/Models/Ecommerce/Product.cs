@@ -15,5 +15,5 @@ public class Product:BaseEntity
     [ForeignKey("CategoryId")]
     public Category Category { get; set; }
 
-    public ICollection<ProductImage> Images { get; set; }
+    public ICollection<ProductImage>? Images { get; set; }
 }
