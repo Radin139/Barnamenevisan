@@ -35,7 +35,7 @@ public class ProductController(IProductService productService, ICategoryService 
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(ProductCreateViewModel viewModel)
+    public async Task<IActionResult> Create(ProductCreateViewModel viewModel, IFormFile[]? imgUp)
     {
         var categories = await categoryService.GetCategoriesForDisplayAsync();
         List<SelectListItem> selectList = new List<SelectListItem>();
@@ -52,7 +52,35 @@ public class ProductController(IProductService productService, ICategoryService 
             return View(viewModel);
         }
 
-        var result = await productService.CreateProductAsync(viewModel);
+        if (imgUp == null || !imgUp.Any())
+        {
+            ModelState.AddModelError("Image", "حداقل یک تصویر الزامی است");
+            return View(viewModel);
+        }
+        
+        List<string> imageNames = new List<string>();
+        
+        foreach (IFormFile img in imgUp)
+        {
+            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            
+            string imageName = Guid.NewGuid() + Path.GetExtension(img.FileName);
+            string savePath = Path.Combine(folderPath, imageName);
+
+            using (var stream = new FileStream(savePath, FileMode.Create))
+            {
+                await img.CopyToAsync(stream);
+            }
+            
+            imageNames.Add(imageName);
+        }
+
+        var result = await productService.CreateProductAsync(viewModel, imageNames);
 
         if (result == ProductCreateResult.CategoryNotFound)
         {
@@ -61,5 +89,10 @@ public class ProductController(IProductService productService, ICategoryService 
         }
         
         return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> ChooseThumbnail(int id)
+    {
+        return View();
     }
 }

@@ -4,5 +4,6 @@ namespace Barnamenevisan.Domain.Interfaces;
 
 public interface IProductRepository:IRepository<Product>
 {
-    Task<List<Product>> GetAllProductsWithCategoriesAsync();
+    Task<List<Product>> GetAllProductsWithIncludeAsync();
+    Task AddProductWithImagesAsync(Product product, List<string> imageNames);
 }

@@ -1,13 +1,15 @@
 using System.Diagnostics;
+using Barnamenevisan.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Barnamenevisan.Web.Controllers;
 
-public class HomeController : Controller
+public class HomeController(IProductService productService) : Controller
 {
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var list = await productService.GetProductsForDisplayAsync();
+        return View(list);
     }
 }

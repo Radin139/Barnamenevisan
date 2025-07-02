@@ -4,7 +4,7 @@
     ViewBag.Title = "افزودن محصول";
 }
 
-<form asp-action="Create" method="post" novalidate="novalidate">
+<form asp-action="Create" method="post" novalidate="novalidate" enctype="multipart/form-data">
     <input type="text" asp-for="Title" class="form-control" placeholder="عنوان" />
     <br/>
     <input type="text" asp-for="ShortDescription" class="form-control" placeholder="توضیحات کوتاه" />
@@ -18,6 +18,8 @@
     <select asp-items="ViewBag.Categories" asp-for="CategoryId" class="form-control">
         <option disabled="disabled" selected="selected">انتخاب دسته بندی</option>
     </select>
+    <br/>
+    <input type="file" class="form-control" placeholder="تصاویر" multiple="multiple" name="imgUp"/>
     <br/>
     <button class="btn btn-success" type="submit">ثبت</button>
     <br><br>
