@@ -63,4 +63,149 @@ public class ProductService(IProductRepository productRepository, ICategoryRepos
                 Image = product.Images.First().ImageName
             }).ToList();
     }
+
+    public async Task<ProductEditViewModel?> GetProductForEditAsync(int id)
+    {
+        Product? product = await productRepository.GetByIdAsync(p => p.Id == id && !p.IsDeleted);
+
+        if (product == null)
+        {
+            return null;
+        }
+
+        return new ProductEditViewModel()
+        {
+            Id = product.Id,
+            Title = product.Title,
+            Price = product.Price,
+            LongDescription = product.LongDescription,
+            ShortDescription = product.ShortDescription,
+            Tags = product.Tags,
+            CategoryId = product.CategoryId,
+            Images = await productRepository.GetProductImagesAsync(product.Id)
+        };
+    }
+
+    public async Task DeleteImageAsync(int id)
+    {
+        ProductImage? image = await productRepository.GetProductImageByIdAsync(id);
+
+        if (image != null)
+        {
+            productRepository.DeleteProductImage(image);
+            
+            string imgPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", image.ImageName);
+
+            if (File.Exists(imgPath))
+            {
+                File.Delete(imgPath);
+            }
+            
+            await productRepository.SaveAsync();
+        }
+        
+        
+    }
+
+    public async Task<bool> DeleteProductAsync(int id)
+    {
+        Product? product = await productRepository.GetByIdAsync(id);
+        if (product == null)
+        {
+            return false;
+        }
+        
+        product.IsDeleted = true;
+        productRepository.Update(product);
+        await categoryRepository.SaveAsync();
+        
+        return true;
+    }
+
+    public async Task<bool> RestoreProductAsync(int id)
+    {
+        Product? product = await productRepository.GetByIdAsync(id);
+        if (product == null)
+        {
+            return false;
+        }
+        
+        product.IsDeleted = false;
+        productRepository.Update(product);
+        await categoryRepository.SaveAsync();
+        
+        return true;
+    }
+
+    public async Task<ProductDeletePermanentlyViewModel?> GetProductForPermanentlyDeleteAsync(int id)
+    {
+        Product? product = await productRepository.GetByIdAsync(p => p.Id == id && p.IsDeleted);
+        if (product == null)
+        {
+            return null;
+        }
+
+        return new ProductDeletePermanentlyViewModel()
+        {
+            Id = product.Id,
+            Title = product.Title,
+        };
+    }
+
+    public async Task<bool> DeleteProductPermanentlyAsync(int id)
+    {
+        Product? product = await productRepository.GetByIdAsync(p => p.Id == id && p.IsDeleted);
+        if (product == null)
+        {
+            return false;
+        }
+        
+        List<ProductImage> images = await productRepository.GetProductImagesAsync(product.Id);
+
+        foreach (var image in images)
+        {
+            productRepository.DeleteProductImage(image);
+            
+            string imgPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", image.ImageName);
+
+            if (File.Exists(imgPath))
+            {
+                File.Delete(imgPath);
+            }
+        }
+        
+        productRepository.Delete(product);
+        await categoryRepository.SaveAsync();
+        
+        return true;
+    }
+
+    public async Task<EditProductResult> EditProductAsync(ProductEditViewModel viewModel)
+    {
+        Product? product = await productRepository.GetByIdAsync(viewModel.Id);
+
+        if (product == null)
+        {
+            return EditProductResult.ProductNotFound;
+        }
+
+        Category? category = await categoryRepository.GetByIdAsync(viewModel.CategoryId);
+        if (category == null)
+        {
+            return EditProductResult.CategoryNotFound;
+        }
+        
+        product.Title = viewModel.Title;
+        product.Price = viewModel.Price;
+        product.LongDescription = viewModel.LongDescription;
+        product.ShortDescription = viewModel.ShortDescription;
+        product.Tags = viewModel.Tags ?? "";
+        product.Images = viewModel.Images;
+        product.CategoryId = viewModel.CategoryId;
+        
+        productRepository.Update(product);
+        await productRepository.SaveAsync();
+        
+        return EditProductResult.Success;
+    }
 }

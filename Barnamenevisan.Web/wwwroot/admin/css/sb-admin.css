@@ -357,3 +357,9 @@ table.dataTable thead .sorting:after {
 .deleted {
     background-color: #e4b9b9;
 }
+
+.mycenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

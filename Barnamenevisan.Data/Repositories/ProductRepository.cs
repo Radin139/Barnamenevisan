@@ -28,4 +28,21 @@ public class ProductRepository(BarnamenevisanDbContext context) : Repository<Pro
         
         await context.Products.AddAsync(product);
     }
+
+    public async Task<List<ProductImage>> GetProductImagesAsync(int id)
+    {
+        var list = await context.ProductImages.Where(productImage => productImage.ProductId == id).ToListAsync();
+        
+        return list;
+    }
+
+    public async Task<ProductImage?> GetProductImageByIdAsync(int id)
+    {
+        return await context.ProductImages.FirstOrDefaultAsync(productImage => productImage.Id == id);
+    }
+
+    public void DeleteProductImage(ProductImage image)
+    {
+        context.ProductImages.Remove(image);
+    }
 }

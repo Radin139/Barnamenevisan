@@ -1,0 +1,50 @@
+﻿@model Barnamenevisan.Domain.ViewModels.Admin.Product.ProductEditViewModel
+
+@{
+    ViewBag.Title = "ویرایش محصول";
+}
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id"/>
+    <input type="text" asp-for="Title" class="form-control" placeholder="عنوان"/>
+    <br/>
+    <input type="text" asp-for="ShortDescription" class="form-control" placeholder="توضیحات کوتاه"/>
+    <br/>
+    <textarea asp-for="LongDescription" class="form-control" placeholder="توضیحات کامل"></textarea>
+    <br/>
+    <input type="number" min="0" asp-for="Price" class="form-control" placeholder="قیمت"/>
+    <br/>
+    <input type="text" asp-for="Tags" class="form-control" placeholder="برچسب ها"/>
+    <br/>
+    <select asp-items="ViewBag.Categories" asp-for="CategoryId" class="form-control">
+    </select>
+    <br/>
+    <div class="form-group">
+        <label>تصاویر</label>
+        <br/>
+        <input type="hidden" asp-for="Images"/>
+        @foreach (var image in Model.Images)
+        {
+            <div id="img-@image.Id" class="img-thumbnail col-md-4">
+                <img src="/Images/@image.ImageName" style="width:100%;height:250px;margin-bottom: 10px"/>
+                <a class="btn btn-danger btn-sm btn-block" onclick="DeleteImage(@image.Id)">حذف</a>
+            </div>
+        }
+        <input type="file" class="form-control" name="imgUp" multiple>
+    </div>
+    <button class="btn btn-warning" type="submit">ویرایش</button>
+    <br><br>
+    <div class="text-danger" asp-validation-summary="All"></div>
+</form>
+
+
+@section Script
+{
+    <script>
+        function DeleteImage(id){
+            $.get("/Admin/Product/DeleteImage/" + id, function (){
+                $("#img-" + id).hide('slow')
+            })
+        }
+    </script>
+}
