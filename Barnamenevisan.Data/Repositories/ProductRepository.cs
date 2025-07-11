@@ -45,4 +45,9 @@ public class ProductRepository(BarnamenevisanDbContext context) : Repository<Pro
     {
         context.ProductImages.Remove(image);
     }
+
+    public async Task<List<Product>> GetProductsByCategoryAsync(int categoryId)
+    {
+        return await context.Products.Include(product => product.Images).Where(product => product.CategoryId == categoryId).ToListAsync();
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using Barnamenevisan.Domain.ViewModels.Admin.Category;
 using Barnamenevisan.Domain.ViewModels.Blog;
+using Barnamenevisan.Domain.ViewModels.Ecommerce;
 
 namespace Barnamenevisan.Core.Services.Interfaces;
 
@@ -14,4 +15,5 @@ public interface ICategoryService
     Task<bool> RestoreCategoryAsync(int id);
     Task<CategoryDeletePermanentlyViewModel?> GetCategoryForPermanentlyDeleteAsync(int id);  
     Task<bool> DeleteCategoryPermanentlyAsync(int id);
+    Task<CategoryProductsViewModel?> GetCategoryProductsAsync(int id);
 }

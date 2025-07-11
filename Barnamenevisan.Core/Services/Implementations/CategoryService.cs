@@ -3,10 +3,11 @@ using Barnamenevisan.Domain.Interfaces;
 using Barnamenevisan.Domain.Models.Ecommerce;
 using Barnamenevisan.Domain.ViewModels.Admin.Category;
 using Barnamenevisan.Domain.ViewModels.Blog;
+using Barnamenevisan.Domain.ViewModels.Ecommerce;
 
 namespace Barnamenevisan.Core.Services.Implementations;
 
-public class CategoryService(ICategoryRepository categoryRepository):ICategoryService
+public class CategoryService(ICategoryRepository categoryRepository, IProductRepository productRepository):ICategoryService
 {
     public async Task<List<CategoryDisplayViewModel>> GetCategoriesForDisplayAsync()
     {
@@ -140,5 +141,31 @@ public class CategoryService(ICategoryRepository categoryRepository):ICategorySe
         await categoryRepository.SaveAsync();
         
         return true;
+    }
+
+    public async Task<CategoryProductsViewModel?> GetCategoryProductsAsync(int id)
+    {
+        Category? category = await categoryRepository.GetByIdAsync(id);
+
+        if (category == null)
+        {
+            return null;
+        }
+
+        var list = await productRepository.GetProductsByCategoryAsync(category.Id);
+        var products = list.Where(product => !product.IsDeleted).OrderByDescending(product => product.RegisterDate)
+            .Select(product => new ProductDisplayViewModel()
+            {
+                Id = product.Id,
+                Title = product.Title,
+                Price = product.Price,
+                Image = product.Images.First().ImageName
+            }).ToList();
+
+        return new CategoryProductsViewModel()
+        {
+            Products = products,
+            Title = category.Title,
+        };
     }
 }

@@ -8,7 +8,7 @@
             @foreach (var viewModel in Model)
             {
                 <li>
-                    <h2><a href="">@viewModel.Title</a></h2>
+                    <h2><a asp-action="Category" asp-route-id="@viewModel.Id">@viewModel.Title</a></h2>
                 </li>
             }
         </ul>

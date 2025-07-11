@@ -1,0 +1,31 @@
+﻿@model Barnamenevisan.Domain.ViewModels.Ecommerce.CategoryProductsViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<div class="col-md-9 col-sm-8 left-side-content">
+
+
+    <section class="last-products">
+        <header><h3> @Model.Title </h3></header>
+        <article>
+         
+            @if (Model.Products.Any())
+            {
+                @foreach (var viewModel in Model.Products)
+                {
+                    @await Component.InvokeAsync("ProductCard", viewModel)
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger">محصولی یافت نشد</div>
+            }
+         
+            <div class="clearfix"></div>
+        </article>
+    </section>
+
+
+</div>
