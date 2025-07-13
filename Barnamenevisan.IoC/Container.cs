@@ -22,6 +22,9 @@ public static class Container
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IProductService, ProductService>();
         
+        services.AddScoped<ISliderImageRepository, SliderImageRepository>();
+        services.AddScoped<ISliderImageService, SliderImageService>();
+        
         services.AddSingleton<EmailSender>();
     }
 

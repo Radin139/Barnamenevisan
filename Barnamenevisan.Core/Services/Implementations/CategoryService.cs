@@ -34,7 +34,7 @@ public class CategoryService(ICategoryRepository categoryRepository, IProductRep
         
         return result
             .OrderBy(user => user.IsDeleted)
-            .ThenBy(user => user.RegisterDate)
+            .ThenByDescending(user => user.RegisterDate)
             .ToList();
     }
 
@@ -135,6 +135,13 @@ public class CategoryService(ICategoryRepository categoryRepository, IProductRep
         if (category == null)
         {
             return false;
+        }
+        
+        var products = await productRepository.GetProductsByCategoryAsync(category.Id);
+
+        foreach (var product in products)
+        {
+            await productRepository.DeleteProductWithImagesAsync(product);
         }
         
         categoryRepository.Delete(category);

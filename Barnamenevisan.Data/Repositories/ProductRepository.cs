@@ -18,6 +18,7 @@ public class ProductRepository(BarnamenevisanDbContext context) : Repository<Pro
         
         foreach (var imageName in imageNames)
         {
+            
             product.Images.Add(new ProductImage()
             {
                 ImageName = imageName,
@@ -49,5 +50,24 @@ public class ProductRepository(BarnamenevisanDbContext context) : Repository<Pro
     public async Task<List<Product>> GetProductsByCategoryAsync(int categoryId)
     {
         return await context.Products.Include(product => product.Images).Where(product => product.CategoryId == categoryId).ToListAsync();
+    }
+
+    public async Task DeleteProductWithImagesAsync(Product product)
+    {
+        List<ProductImage> images = await GetProductImagesAsync(product.Id);
+
+        foreach (var image in images)
+        {
+            DeleteProductImage(image);
+            
+            string imgPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", image.ImageName);
+
+            if (File.Exists(imgPath))
+            {
+                File.Delete(imgPath);
+            }
+        }
+        
+        Delete(product);
     }
 }

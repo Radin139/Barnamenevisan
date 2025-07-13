@@ -74,21 +74,20 @@ public class ProductController(IProductService productService, ICategoryService 
         
         foreach (IFormFile img in imgUp)
         {
-            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images");
+            string imageName = Guid.NewGuid() + Path.GetExtension(img.FileName);   
+            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", imageName);
 
             if (!Directory.Exists(folderPath))
             {
                 Directory.CreateDirectory(folderPath);
             }
             
-            string imageName = Guid.NewGuid() + Path.GetExtension(img.FileName);
             string savePath = Path.Combine(folderPath, imageName);
 
             using (var stream = new FileStream(savePath, FileMode.Create))
             {
                 await img.CopyToAsync(stream);
             }
-            
             imageNames.Add(imageName);
         }
 

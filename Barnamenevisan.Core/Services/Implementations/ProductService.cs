@@ -12,7 +12,7 @@ public class ProductService(IProductRepository productRepository, ICategoryRepos
     public async Task<List<ProductAdminViewModel>> GetProductsForAdminAsync()
     {
         var list = await productRepository.GetAllProductsWithIncludeAsync();
-        return list.Select(product => new ProductAdminViewModel
+        return list.OrderBy(product => product.IsDeleted).ThenByDescending(product => product.RegisterDate).Select(product => new ProductAdminViewModel
         {
             Id = product.Id,
             Category = product.Category.Title,
@@ -160,21 +160,7 @@ public class ProductService(IProductRepository productRepository, ICategoryRepos
             return false;
         }
         
-        List<ProductImage> images = await productRepository.GetProductImagesAsync(product.Id);
-
-        foreach (var image in images)
-        {
-            productRepository.DeleteProductImage(image);
-            
-            string imgPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", image.ImageName);
-
-            if (File.Exists(imgPath))
-            {
-                File.Delete(imgPath);
-            }
-        }
-        
-        productRepository.Delete(product);
+        await productRepository.DeleteProductWithImagesAsync(product);
         await categoryRepository.SaveAsync();
         
         return true;

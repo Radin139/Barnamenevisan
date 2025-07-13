@@ -1,0 +1,69 @@
+﻿@using Barnamenevisan.Core.Extensions
+@model List<Barnamenevisan.Domain.ViewModels.Ecommerce.SliderImageAdminViewModel>
+
+@{
+    ViewBag.Title = "تصاویر اسلایدر";
+}
+
+<div class="text-center">
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">افزودن</button>
+    <br/>
+    <br/>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">تصویر</th>
+            <th class="text-center">تاریخ ثبت</th>
+            <th class="text-center">دستورات</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            int i = 1;
+            @foreach (var sliderImage in Model)
+            {
+                <tr @(sliderImage.IsDeleted ? "class=deleted" : "")>
+                    <td>@i</td>
+                    <td>
+                        <img src="/Images/@sliderImage.ImageName" alt="img" style="width: 450px;height: 250px"/>
+                    </td>
+                    <td>@sliderImage.RegisterDate.ToShamsi()</td>
+                    <td>
+                        @if (sliderImage.IsDeleted)
+                        {
+                            <a class="btn btn-primary" asp-action="Restore" asp-route-id="@sliderImage.Id">بازگرداندن</a>
+                            <a class="btn btn-danger" asp-action="DeletePermanently" asp-route-id="@sliderImage.Id">حذف برای همیشه</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@sliderImage.Id">حذف</a>
+                        }
+                    </td>
+                </tr>
+
+                i++;
+            }
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">افزودن تصویر اسلایذ</h5>
+                </div>
+                <div class="modal-body">
+                    <input type="file" class="form-control" name="imgUp" multiple/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بازگشت</button>
+                    <button type="submit" class="btn btn-success">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

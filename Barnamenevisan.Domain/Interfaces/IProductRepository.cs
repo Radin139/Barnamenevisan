@@ -10,4 +10,5 @@ public interface IProductRepository:IRepository<Product>
     Task<ProductImage?> GetProductImageByIdAsync(int id);
     void DeleteProductImage(ProductImage image);
     Task<List<Product>> GetProductsByCategoryAsync(int categoryId);
+    Task DeleteProductWithImagesAsync(Product product);
 }
